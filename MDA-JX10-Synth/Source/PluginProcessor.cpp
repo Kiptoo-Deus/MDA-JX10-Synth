@@ -18,7 +18,7 @@ MDAJX10SynthAudioProcessor::MDAJX10SynthAudioProcessor()
                        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
+                        #endif
                        )
 #endif
 {
@@ -141,8 +141,9 @@ void MDAJX10SynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // This is here to avoid people getting screaming feedback
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i){
         buffer.clear (i, 0, buffer.getNumSamples());
+        }
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -156,6 +157,31 @@ void MDAJX10SynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
         // ..do something to the data...
     }
+}
+void MDAJX10SynthAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+{
+    int bufferOffset = 0;
+
+    for (const auto metadata : midiMessages) {
+        //this renders audio that happens before this event 
+        int samplesThisSegment = metadata.samplePosition - bufferOffset;
+        if (samplesThisSegment > 0) {
+            render(buffer, samplesThisSegment = metadata.samplePosition - bufferOffset);
+            bufferOffset += samplesThisSegment;
+        }
+        //ignore MIDI messages such as sysex
+        if (metadata.numBytes <= 3) {
+            uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
+            uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
+            handleMIDI(metadata.data[0], data1, data2);
+        }
+    }
+    //render the audio after the last MIDI event, render the entire buffer
+    int samplesLastSegment = buffer.getNumSamples() - bufferOffset;
+    if (samplesLastSegment > 0) {
+        render(buffer, samplesLastSegment, bufferOffset);
+      }
+    midiMessages.clear();
 }
 
 //==============================================================================
