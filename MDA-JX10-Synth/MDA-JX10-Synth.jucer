@@ -6,6 +6,9 @@
               pluginCode="JX10" pluginManufacturerCode="Joel" companyName="kiptoo_deus">
   <MAINGROUP id="RpgTkR" name="MDA-JX10-Synth">
     <GROUP id="{272767E5-3B55-782F-59A4-FE66CB0F373C}" name="Source">
+      <FILE id="cLW4FG" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
+      <FILE id="ZJqM7R" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
+      <FILE id="P8SUqO" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
       <FILE id="spQybX" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="mu7Uo9" name="PluginProcessor.h" compile="0" resource="0"
