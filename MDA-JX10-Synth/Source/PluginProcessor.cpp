@@ -93,14 +93,13 @@ void MDAJX10SynthAudioProcessor::changeProgramName (int index, const juce::Strin
 //==============================================================================
 void MDAJX10SynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    // this method  does pre-playback initialisation that we need..
+    synth.allocateResources(sampleRate, samplesPerBlock);
 }
 
 void MDAJX10SynthAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
+    synth.deallocateResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -166,7 +165,7 @@ void MDAJX10SynthAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& b
         //this renders audio that happens before this event 
         int samplesThisSegment = metadata.samplePosition - bufferOffset;
         if (samplesThisSegment > 0) {
-            render(buffer, samplesThisSegment = metadata.samplePosition - bufferOffset);
+            render(buffer, samplesThisSegment,bufferOffset);
             bufferOffset += samplesThisSegment;
         }
         //ignore MIDI messages such as sysex
