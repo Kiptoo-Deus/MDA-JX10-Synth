@@ -157,6 +157,10 @@ void MDAJX10SynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         // ..do something to the data...
     }
 }
+void MDAJX10SynthAudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
+{
+    synth.MidiMessage(data0, data1, data2);
+}
 void MDAJX10SynthAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     int bufferOffset = 0;

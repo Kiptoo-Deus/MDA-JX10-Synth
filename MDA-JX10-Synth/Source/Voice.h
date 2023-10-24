@@ -12,6 +12,9 @@
 
 struct Voice
 {
+    int note;
+    int velocity;
+
     void reset()
     {
 
