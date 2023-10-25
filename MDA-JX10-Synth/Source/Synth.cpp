@@ -25,17 +25,18 @@
     }
     void Synth::reset()
     {
-                     
+        voice.reset();
     }
     void Synth::render(float** outputBuffers, int sampleCount)
     {
 
     }
-    void Synth::noteOn(int note, int velocity)
+    void Synth::noteOn(int note, int velocity)//registers the note number and velocity of the most recently played key
     {
         voice.note = note;
         voice.velocity = velocity;
     }
+
     void Synth::noteOff(int note)
     {
         if (voice.note == note) {

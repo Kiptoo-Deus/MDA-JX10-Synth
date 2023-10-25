@@ -95,6 +95,12 @@ void MDAJX10SynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
 {
     // this method  does pre-playback initialisation that we need..
     synth.allocateResources(sampleRate, samplesPerBlock);
+    reset();
+}
+
+void MDAJX10SynthAudioProcessor::reset()
+{
+    synth.reset();
 }
 
 void MDAJX10SynthAudioProcessor::releaseResources()
