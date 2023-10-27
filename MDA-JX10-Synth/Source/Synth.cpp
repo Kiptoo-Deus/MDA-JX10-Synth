@@ -26,9 +26,27 @@
     void Synth::reset()
     {
         voice.reset();
+        noiseGen.reset();
     }
     void Synth::render(float** outputBuffers, int sampleCount)
     {
+        float* outputBufferLeft = outputBuffers[0];
+        float* outputputBufferRight = outputBuffers[1];
+
+        for (int sample = 0; sample < sampleCount, ++sample;)    //loop through the samples in the buffer one by one..samplecount is the number of samples to be rendered
+        {
+            float noise = noiseGen.nextValue();//capture output from the noise generator
+
+            float output = 0.0f;
+            if (voice.note > 0) {
+                output = noise * (voice.velocity / 127.0f) * 0.5f;
+            }
+            outputBufferLeft[sample] = output;
+            if (outputBufferLeft != nullptr) {
+                outputputBufferRight[sample] = output;
+            }
+
+        }
 
     }
     void Synth::noteOn(int note, int velocity)//registers the note number and velocity of the most recently played key

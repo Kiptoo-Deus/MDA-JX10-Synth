@@ -167,6 +167,19 @@ void MDAJX10SynthAudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_
 {
     synth.MidiMessage(data0, data1, data2);
 }
+
+void MDAJX10SynthAudioProcessor::render(
+    juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffSet)
+{
+    float* outputBuffers[2] = { nullptr, nullptr };
+    outputBuffers[0] = buffer.getWritePointer(0) + bufferOffSet;
+    if (getTotalNumOutputChannels() > 1) {
+        outputBuffers[1] = buffer.getWritePointer(1) + bufferOffSet;
+    }
+    synth.render(outputBuffers, sampleCount);
+
+    }
+
 void MDAJX10SynthAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     int bufferOffset = 0;
