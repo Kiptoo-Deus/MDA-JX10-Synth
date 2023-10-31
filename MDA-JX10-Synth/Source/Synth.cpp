@@ -9,7 +9,7 @@
 */
 
 #include "Synth.h"
-
+#include "Utils.h"
 
     Synth::Synth() 
     {
@@ -47,7 +47,8 @@
             }
 
         }
-
+        protectYourEars(outputBufferLeft, sampleCount);
+        protectYourEars(outputputBufferRight, sampleCount);
     }
     void Synth::noteOn(int note, int velocity)//registers the note number and velocity of the most recently played key
     {
