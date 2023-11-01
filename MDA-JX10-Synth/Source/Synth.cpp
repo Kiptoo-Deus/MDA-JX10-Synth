@@ -39,7 +39,7 @@
 
             float output = 0.0f;
             if (voice.note > 0) {
-                output = noise * (voice.velocity / 127.0f) * 0.5f;
+                output = voice.render();
             }
             outputBufferLeft[sample] = output;
             if (outputBufferLeft != nullptr) {
@@ -53,14 +53,19 @@
     void Synth::noteOn(int note, int velocity)//registers the note number and velocity of the most recently played key
     {
         voice.note = note;
-        voice.velocity = velocity;
+        
+        voice.osc.amplitude = (velocity / 127.0f) * 0.5f;
+        voice.osc.freq = 261.63f;   //this is the pitch of C on a piano
+        voice.osc.sampleRate = sampleRate;
+        voice.osc.phaseOffset = 0.0f;
+        voice.osc.reset();
     }
 
     void Synth::noteOff(int note)
     {
         if (voice.note == note) {
             voice.note = 0;
-            voice.velocity = 0;
+
         }
     }
 
