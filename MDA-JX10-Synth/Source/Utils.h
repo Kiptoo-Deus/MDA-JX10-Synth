@@ -14,7 +14,7 @@ inline void protectYourEars(float* buffer, int sampleCount)
 {
     if (buffer == nullptr) { return; }
     bool firstWarning = true;
-    for (int i; i < sampleCount; ++i) {
+    for (int i=0; i < sampleCount; ++i) {
         float x = buffer[i];
         bool silence = false;
         if (std::isnan(x)) {
@@ -25,7 +25,7 @@ inline void protectYourEars(float* buffer, int sampleCount)
             DBG("!!!WARNG: inf dected in audio buffer, silencing!!!");
             silence = true;
         }
-        else if (x < -2.0f || x>2.0f) {
+        else if (x < -2.0f || x > 2.0f) {
             DBG("!!!WARNING:: sample out of range, silencing");
             silence = true;
         }
