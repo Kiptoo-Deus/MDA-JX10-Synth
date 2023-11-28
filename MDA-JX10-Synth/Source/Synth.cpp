@@ -28,16 +28,18 @@
         voice.reset();
         noiseGen.reset();
     }
+
     void Synth::render(float** outputBuffers, int sampleCount)
     {
         float* outputBufferLeft = outputBuffers[0];
         float* outputputBufferRight = outputBuffers[1];
 
-        for (int sample = 0; sample < sampleCount, ++sample;)    //loop through the samples in the buffer one by one..samplecount is the number of samples to be rendered
+        for (int sample = 0; sample < sampleCount; ++sample)    //loop through the samples in the buffer one by one..samplecount is the number of samples to be rendered
         {
             float noise = noiseGen.nextValue();//capture output from the noise generator
 
             float output = 0.0f;
+
             if (voice.note > 0) {
                 output = voice.render();
             }
@@ -53,18 +55,17 @@
     void Synth::noteOn(int note, int velocity)//registers the note number and velocity of the most recently played key
     {
         voice.note = note;
-        
+        float freq = 261.63f;   //this is the pitch of C on a piano  
+            
         voice.osc.amplitude = (velocity / 127.0f) * 0.5f;
-        voice.osc.freq = 261.63f;   //this is the pitch of C on a piano
-        voice.osc.sampleRate = sampleRate;
-        voice.osc.phaseOffset = 0.0f;
+        voice.osc.inc = freq/sampleRate;
         voice.osc.reset();
     }
 
     void Synth::noteOff(int note)
     {
         if (voice.note == note) {
-            voice.note = 0;
+            
 
         }
     }
