@@ -11,86 +11,90 @@
 #include "Synth.h"
 #include "Utils.h"
 
-    Synth::Synth() 
-    {
+Synth::Synth()
+{
     sampleRate = 44100.0f;
-    }
-    void Synth::allocateResources(double sampleRate_, int /*samplesPerBlock*/)
-    {
-        sampleRate = static_cast<float>(sampleRate);
-    }
-    void Synth::deallocateResources()
-    {
+}
 
-    }
-    void Synth::reset()
-    {
-        voice.reset();
-        noiseGen.reset();
-    }
+void Synth::allocateResources(double sampleRate_, int /*samplesPerBlock*/)
+{
+    sampleRate = static_cast<float>(sampleRate_);
+}
 
-    void Synth::render(float** outputBuffers, int sampleCount)
-    {
-        float* outputBufferLeft = outputBuffers[0];
-        float* outputputBufferRight = outputBuffers[1];
+void Synth::deallocateResources()
+{
+    // do nothing
+}
 
-        for (int sample = 0; sample < sampleCount; ++sample)    //loop through the samples in the buffer one by one..samplecount is the number of samples to be rendered
-        {
-            float noise = noiseGen.nextValue();//capture output from the noise generator
+void Synth::reset()
+{
+    voice.reset();
+    noiseGen.reset();
+}
 
-            float output = 0.0f;
+void Synth::render(float** outputBuffers, int sampleCount)
+{
+    float* outputBufferLeft = outputBuffers[0];
+    float* outputBufferRight = outputBuffers[1];
 
-            if (voice.note > 0) {
-                output = voice.render();
-            }
-            outputBufferLeft[sample] = output;
-            if (outputBufferLeft != nullptr) {
-                outputputBufferRight[sample] = output;
-            }
+    for (int sample = 0; sample < sampleCount; ++sample) {
+        float noise = noiseGen.nextValue();
 
+        float output = 0.0f;
+
+        if (voice.note > 0) {
+            output = voice.render();
         }
-        protectYourEars(outputBufferLeft, sampleCount);
-        protectYourEars(outputputBufferRight, sampleCount);
-    }
-    void Synth::noteOn(int note, int velocity)//registers the note number and velocity of the most recently played key
-    {
-        voice.note = note;
-        float freq = 261.63f;   //this is the pitch of C on a piano  
-            
-        voice.osc.amplitude = (velocity / 127.0f) * 0.5f;
-        voice.osc.inc = freq/sampleRate;
-        voice.osc.reset();
-    }
 
-    void Synth::noteOff(int note)
-    {
-        if (voice.note == note) {
-            
-
+        outputBufferLeft[sample] = output;
+        if (outputBufferRight != nullptr) {
+            outputBufferRight[sample] = output;
         }
     }
 
-    void Synth::MidiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
-    {
-        switch (data0 & 0xF0) {
-            //Note off
-        case 0x80:
-            noteOff(data1 & 0x7F);
-            break;
-            //Note on
-        case 0x90:
-        {
-            uint8_t note = data1 & 0x7F;
-            uint8_t velo = data2 & 0x7F;
-            if (velo > 0) {
-                noteOn(note, velo);
-            }
-            else
-            {
-                noteOff(note);
-            }
+    protectYourEars(outputBufferLeft, sampleCount);
+    protectYourEars(outputBufferRight, sampleCount);
+}
 
-            break;
+void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
+{
+    switch (data0 & 0xF0) {
+        // Note off
+    case 0x80:
+        noteOff(data1 & 0x7F);
+        break;
+
+        // Note on
+    case 0x90: {
+        uint8_t note = data1 & 0x7F;
+        uint8_t velo = data2 & 0x7F;
+        if (velo > 0) {
+            noteOn(note, velo);
         }
+        else {
+            noteOff(note);
         }
+        break;
     }
+    }
+}
+
+void Synth::noteOn(int note, int velocity)
+{
+    voice.note = note;
+
+    float freq = 441.0f * std::exp2(float(note - 69) / 12.0f);
+
+    voice.osc.amplitude = (velocity / 127.0f) * 0.5f;
+    voice.osc.inc = freq / sampleRate;
+    voice.osc.reset();
+    voice.osc.freq = freq;
+    voice.osc.sampleRate = sampleRate;
+}
+
+void Synth::noteOff(int note)
+{
+    if (voice.note == note) {
+        voice.note = 0;
+    }
+}
