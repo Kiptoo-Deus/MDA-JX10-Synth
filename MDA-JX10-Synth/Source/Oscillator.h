@@ -28,6 +28,7 @@ public:
         sin0 = 0.0f;
         sin1 = 0.0f;
         dsin = 0.0f;
+        dc = 0.0f;
 
      }
     float nextSample()
@@ -38,6 +39,7 @@ public:
         if (phase <= PI_OVER_4) {
             float halfPeriod = period / 2.0f;
             phaseMax = std::floor(0.5f + halfPeriod) - 0.5f;
+            dc = 0.5f * amplitude / phaseMax;
             phaseMax *= PI;
 
             inc = phaseMax / halfPeriod;
@@ -65,7 +67,7 @@ public:
 
             output = sinp / phase;
         }
-        return output;
+        return output - dc;
     }
 private:
     float phase;
@@ -74,4 +76,5 @@ private:
     float sin0;
     float sin1;
     float dsin;
+    float dc;
 };
