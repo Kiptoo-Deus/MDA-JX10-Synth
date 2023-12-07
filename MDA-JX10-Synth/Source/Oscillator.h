@@ -28,7 +28,32 @@ public:
      }
     float nextSample()
     {
-       
+        float output = 0.0f;
+        phase += inc;           
+
+        if (phase <= PI_OVER_4) {
+            float halfPeriod = period / 2.0f;
+            phaseMax = std::floor(0.5f + halfPeriod) - 0.5f;
+            phaseMax *= PI;
+
+            inc = phaseMax / halfPeriod;
+            phase = -phase;
+
+            if (phase * phase > 1e-9) {
+                output = amplitude * std::sin(phase) / phase;
+             }
+            else {
+                output = amplitude;
+             }
+        }
+        else {
+            if (phase > phaseMax) {
+                phase = phaseMax + phaseMax - phase;
+                inc = -inc;
+            }
+            output = amplitude * std::sin(phase) / phase;
+        }
+        return output;
     }
 private:
     float phase;
