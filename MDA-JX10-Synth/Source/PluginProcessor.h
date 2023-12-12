@@ -97,6 +97,32 @@ private:
 
 private:
     Synth synth;
+    juce::AudioParameterFloat* oscMixParam;
+    juce::AudioParameterFloat* oscTuneParam;
+    juce::AudioParameterFloat* oscFineParam;
+    juce::AudioParameterChoice* glideModeParam;
+    juce::AudioParameterFloat* glideRateParam;
+    juce::AudioParameterFloat* glideBendParam;
+    juce::AudioParameterFloat* filterFreqParam;
+    juce::AudioParameterFloat* filterResoParam;
+    juce::AudioParameterFloat* filterEnvParam;
+    juce::AudioParameterFloat* filterLFOParam;
+    juce::AudioParameterFloat* filterVelocityParam;
+    juce::AudioParameterFloat* filterAttackParam;
+    juce::AudioParameterFloat* filterDecayParam;
+    juce::AudioParameterFloat* filterSustainParam;
+    juce::AudioParameterFloat* filterReleaseParam;
+    juce::AudioParameterFloat* envAttackParam;
+    juce::AudioParameterFloat* envDecayParam;
+    juce::AudioParameterFloat* envSustainParam;
+    juce::AudioParameterFloat* envReleaseParam;
+    juce::AudioParameterFloat* lfoRateParam;
+    juce::AudioParameterFloat* vibratoParam;
+    juce::AudioParameterFloat* noiseParam;
+    juce::AudioParameterFloat* octaveParam;
+    juce::AudioParameterFloat* tuningParam;
+    juce::AudioParameterFloat* outputLevelParam;
+    juce::AudioParameterChoice* polyModeParam;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MDAJX10SynthAudioProcessor)
