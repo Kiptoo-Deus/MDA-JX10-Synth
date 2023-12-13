@@ -231,3 +231,10 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new MDAJX10SynthAudioProcessor();
 }
+
+juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    return layout;
+}
