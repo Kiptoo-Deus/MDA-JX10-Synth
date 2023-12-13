@@ -51,11 +51,12 @@ namespace ParameterId
 */
 class MDAJX10SynthAudioProcessor : public juce::AudioProcessor
 {
+
 public:
     //==============================================================================
     MDAJX10SynthAudioProcessor();
     ~MDAJX10SynthAudioProcessor() override;
-
+    juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout()};
     //==============================================================================
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -94,6 +95,7 @@ private:
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
     void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
     void render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 private:
     Synth synth;
