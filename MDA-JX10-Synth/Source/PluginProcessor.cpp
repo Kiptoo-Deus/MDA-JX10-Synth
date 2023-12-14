@@ -236,5 +236,19 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
+    layout.add(std::make_unique<juce::AudioParameterChoice>(
+        ParameterID::polyMode,
+        "Polyphony",
+        juce::StringArray{ "Mono", "Poly" },
+        1));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterID::oscTune,
+        "Osc Tune", //oscillator tuning
+        juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+        -12.0f,     //default value
+        juce::AudioParameterFloatAttributes().withLabel("semitones") //expressed in semitones
+        ));
+
     return layout;
 }
