@@ -269,6 +269,25 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         .withStringFromValueFunction(oscMixStringFromValue)
         ));
 
+    layout.add(std::make_unique<juce::AudioParameterChoice>(
+        ParameterId::glideMode,
+        "Glide Mode",
+        juce::StringArray{ "Off", "Legato", "Always" },  //choice box that offers three choices
+    0));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::glideRate,
+        "Glide Rate",
+        juce::NormalisableRange<float>(0.0f, 100.f, 1.0f),
+        35.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));  //determines how it takes to glide from one note to the next
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::glideBend,
+        "Glide Bend",
+        juce::NormalisableRange<float>(-36.0f, 36.0f, 0.01f, 0.4f, true),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("semi")));  //lets you add an additional glide to any note that gets played between -36 and +36 semitones.
 
     return layout;
 }
