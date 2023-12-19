@@ -289,5 +289,32 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         0.0f,
         juce::AudioParameterFloatAttributes().withLabel("semi")));  //lets you add an additional glide to any note that gets played between -36 and +36 semitones.
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterFreq,
+        "Filter Freq",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f),
+        100.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterReso,
+        "Filter Reso",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        15.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterEnv,
+        "Filter Env",
+        juce::NormalisableRange<float>(-100.0f, 100.0f, 0.1f),
+        50.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterLFO,
+        "Filter LFO",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
     return layout;
 }
