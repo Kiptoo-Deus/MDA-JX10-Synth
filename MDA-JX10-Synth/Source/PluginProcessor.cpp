@@ -250,5 +250,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         juce::AudioParameterFloatAttributes().withLabel("semitones") //expressed in semitones
         ));
 
+
     return layout;
 }
