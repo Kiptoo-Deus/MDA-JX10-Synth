@@ -334,5 +334,33 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         .withLabel("%")
         .withStringFromValueFunction(filterVelocityStringFromValue)));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterAttack,
+        "Filter Attack",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterDecay,
+        "Filter Decay",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        30.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterSustain,
+        "Filter Sustain",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterRelease,
+        "Filter Release",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        25.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
     return layout;
 }
