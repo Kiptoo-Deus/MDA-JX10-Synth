@@ -316,5 +316,23 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
         0.0f,
         juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    auto filterVelocityStringFromValue = [](float value, int)
+    {
+        if (value < -90.0f)
+            return juce::String("OFF");
+        else
+            return juce::String(value);
+    };
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::filterVelocity,
+        "Velocity",
+        juce::NormalisableRange<float>(-100.0f, 100.0f, 1.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes()
+        .withLabel("%")
+        .withStringFromValueFunction(filterVelocityStringFromValue)));
+
     return layout;
 }
