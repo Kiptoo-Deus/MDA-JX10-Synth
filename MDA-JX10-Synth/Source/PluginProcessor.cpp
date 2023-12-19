@@ -208,7 +208,9 @@ bool MDAJX10SynthAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* MDAJX10SynthAudioProcessor::createEditor()
 {
-    return new MDAJX10SynthAudioProcessorEditor(*this);
+    auto editor = new juce::GenericAudioProcessorEditor(*this);
+    editor->setSize(500, 1050);
+    return editor;
 }
 
 //==============================================================================
@@ -237,17 +239,34 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
     layout.add(std::make_unique<juce::AudioParameterChoice>(
-        ParameterID::polyMode,
+        ParameterId::polyMode,
         "Polyphony",
         juce::StringArray{ "Mono", "Poly" },
         1));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        ParameterID::oscTune,
+        ParameterId::oscTune,
         "Osc Tune", //oscillator tuning
         juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
         -12.0f,     //default value
-        juce::AudioParameterFloatAttributes().withLabel("semitones") //expressed in semitones
+        juce::AudioParameterFloatAttributes().withLabel("cent") //expressed in semitones
+        ));
+
+    auto oscMixStringFromValue = [](float value, int)
+    {
+        char s[16] = { 0 };
+        snprintf(s, 16, "%4.0f:%2.0f", 100.0 - 0.5f * value * value);
+        return juce::String(s);
+    };
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::oscMix,
+        "OscMix",           
+        juce::NormalisableRange<float>(0.0f, 100.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes()
+        .withLabel("%")
+        .withStringFromValueFunction(oscMixStringFromValue)
         ));
 
     return layout;
