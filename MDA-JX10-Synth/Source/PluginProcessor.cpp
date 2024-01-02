@@ -434,6 +434,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         "Octave",
         juce::NormalisableRange <float>(-2.0f, 2.0f, 1.0f),
         0.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::tuning,
+        "Tuning",
+        juce::NormalisableRange<float>(-100.0f, 100.0f, 0.1f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("cent")));
 
     return layout;
 }
