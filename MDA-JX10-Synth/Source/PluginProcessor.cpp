@@ -441,5 +441,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         0.0f,
         juce::AudioParameterFloatAttributes().withLabel("cent")));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::outputLevel,
+        "Output Level",
+        juce::NormalisableRange<float>(-24.0f, 6.0f, 0.1f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("dB")));    ///Volume parameter
+
     return layout;
 }
