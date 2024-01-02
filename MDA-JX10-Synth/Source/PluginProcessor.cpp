@@ -362,5 +362,65 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         25.0f,
         juce::AudioParameterFloatAttributes().withLabel("%")));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::envAttack,
+        "Env Attack",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::envDecay,
+        "Env Decay",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        50.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::envSustain,
+        "Env Sustain",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        100.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::envRelease,
+        "Env Release",
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
+        30.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
+
+    auto lfoRateStringFromValue = [](float value, int)
+    {
+        float lfoHz = std::exp(7.0f * value - 4.0f);
+        return juce::String(lfoHz, 3);
+    };
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::lfoRate,
+        "LFO Rate",
+        juce::NormalisableRange<float>(),
+        0.81f,
+        juce::AudioParameterFloatAttributes()
+        .withLabel("Hz")
+        .withStringFromValueFunction(lfoRateStringFromValue)));
+
+    auto vibratoStringFromValue = [](float value, int)
+    {
+        if (value < 0.0f)
+            return "PWM" + juce::String(-value, 1);
+        else
+            return juce::String(value, 1);
+    };
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::vibrato,
+        "Vibrato",
+        juce::NormalisableRange<float>(-100.0f, 100.0f, 0.1f),
+        0.0f,
+        juce::AudioParameterFloatAttributes()
+        .withLabel("%")
+        .withStringFromValueFunction(vibratoStringFromValue)));
+
     return layout;
 }
