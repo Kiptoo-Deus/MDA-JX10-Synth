@@ -421,6 +421,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout MDAJX10SynthAudioProcessor::
         juce::AudioParameterFloatAttributes()
         .withLabel("%")
         .withStringFromValueFunction(vibratoStringFromValue)));
-
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        ParameterId::noise,
+        "Noise",
+        juce::NormalisableRange <float>(0.0f, 100.0f, 1.0f),
+        0.0f,
+        juce::AudioParameterFloatAttributes().withLabel("%")));
     return layout;
 }
