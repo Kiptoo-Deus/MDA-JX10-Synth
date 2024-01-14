@@ -38,12 +38,12 @@ void Synth::render(float** outputBuffers, int sampleCount)
     float* outputBufferRight = outputBuffers[1];
 
     for (int sample = 0; sample < sampleCount; ++sample) {
-        float noise = noiseGen.nextValue();
+        float noise = noiseGen.nextValue() * noiseMix;
 
         float output = 0.0f;
 
         if (voice.note > 0) {
-            output = voice.render();
+            output = voice.render() + noise;
         }
 
         outputBufferLeft[sample] = output;
@@ -76,6 +76,11 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
         }
         break;
     }
+
+
+
+
+             
     }
 }
 
