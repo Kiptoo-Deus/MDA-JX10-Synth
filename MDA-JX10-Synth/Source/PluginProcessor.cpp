@@ -22,6 +22,9 @@ MDAJX10SynthAudioProcessor::MDAJX10SynthAudioProcessor()
     )
 #endif
 {
+    noiseParam = dynamic_cast<juce::AudioParameterFloat*>(
+        apvts.getParameter(ParameterId::noise.getParamID()));
+
 }
 
 MDAJX10SynthAudioProcessor::~MDAJX10SynthAudioProcessor()
@@ -136,6 +139,10 @@ bool MDAJX10SynthAudioProcessor::isBusesLayoutSupported(const BusesLayout& layou
 void MDAJX10SynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
+    const juce::LocalisedStrings& paramID = PARAMETER_ID::noise.getParamID();
+    float noiseMix = noiseParam->get() / 100.0f;
+    noiseMix *= noiseMix;
+    synth.noiseMix = noiseMix * 0.06f;
 
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
