@@ -8,7 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+#include "Utils.h"
 //==============================================================================
 MDAJX10SynthAudioProcessor::MDAJX10SynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -22,8 +22,35 @@ MDAJX10SynthAudioProcessor::MDAJX10SynthAudioProcessor()
     )
 #endif
 {
-    noiseParam = dynamic_cast<juce::AudioParameterFloat*>(
-        apvts.getParameter(ParameterId::noise.getParamID()));
+  /*  noiseParam = dynamic_cast<juce::AudioParameterFloat*>(
+        apvts.getParameter(ParameterId::noise.getParamID()));*/
+
+    castParameter(apvts, ParameterId::oscMix, oscMixParam);
+    castParameter(apvts, ParameterId::oscTune, oscTuneParam);
+    castParameter(apvts, ParameterId::oscFine, oscFineParam);
+    castParameter(apvts, ParameterId::glideMode, glideModeParam);
+    castParameter(apvts, ParameterId::glideRate, glideRateParam);
+    castParameter(apvts, ParameterId::glideBend, glideBendParam);
+    castParameter(apvts, ParameterId::filterFreq, filterFreqParam);
+    castParameter(apvts, ParameterId::filterReso, filterResoParam);
+    castParameter(apvts, ParameterId::filterEnv, filterEnvParam);
+    castParameter(apvts, ParameterId::filterLFO, filterLFOParam);
+    castParameter(apvts, ParameterId::filterVelocity, filterVelocityParam);
+    castParameter(apvts, ParameterId::filterAttack, filterAttackParam);
+    castParameter(apvts, ParameterId::filterDecay, filterDecayParam);
+    castParameter(apvts, ParameterId::filterSustain, filterSustainParam);
+    castParameter(apvts, ParameterId::filterRelease, filterReleaseParam);
+    castParameter(apvts, ParameterId::envAttack, envAttackParam);
+    castParameter(apvts, ParameterId::envDecay, envDecayParam);
+    castParameter(apvts, ParameterId::envSustain, envSustainParam);
+    castParameter(apvts, ParameterId::envRelease, envReleaseParam);
+    castParameter(apvts, ParameterId::lfoRate, lfoRateParam);
+    castParameter(apvts, ParameterId::vibrato, vibratoParam);
+    castParameter(apvts, ParameterId::noise, noiseParam);
+    castParameter(apvts, ParameterId::octave, octaveParam);
+    castParameter(apvts, ParameterId::tuning, tuningParam);
+    castParameter(apvts, ParameterId::outputLevel, outputLevelParam);
+    castParameter(apvts, ParameterId::polyMode, polyModeParam);
 
 }
 
@@ -139,8 +166,9 @@ bool MDAJX10SynthAudioProcessor::isBusesLayoutSupported(const BusesLayout& layou
 void MDAJX10SynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    const juce::LocalisedStrings& paramID = PARAMETER_ID::noise.getParamID();
-    float noiseMix = noiseParam->get() / 100.0f;
+
+    const juce::String& paramID = ParameterId::noise.getParamID();
+    float noiseMix = noiseParam->get()/ 100.0f;
     noiseMix *= noiseMix;
     synth.noiseMix = noiseMix * 0.06f;
 
