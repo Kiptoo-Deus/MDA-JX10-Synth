@@ -30,17 +30,17 @@ namespace ParameterId
         PARAMETER_ID(filterDecay)
         PARAMETER_ID(filterSustain)
         PARAMETER_ID(filterRelease)
-            PARAMETER_ID(envAttack)
-            PARAMETER_ID(envDecay)
-            PARAMETER_ID(envSustain)
-            PARAMETER_ID(envRelease)
-            PARAMETER_ID(lfoRate)
-            PARAMETER_ID(vibrato)
-            PARAMETER_ID(noise)
-            PARAMETER_ID(octave)
-            PARAMETER_ID(tuning)
-            PARAMETER_ID(outputLevel)
-            PARAMETER_ID(polyMode)
+        PARAMETER_ID(envAttack)
+        PARAMETER_ID(envDecay)
+        PARAMETER_ID(envSustain)
+        PARAMETER_ID(envRelease)
+        PARAMETER_ID(lfoRate)
+        PARAMETER_ID(vibrato)
+        PARAMETER_ID(noise)
+        PARAMETER_ID(octave)
+        PARAMETER_ID(tuning)
+        PARAMETER_ID(outputLevel)
+        PARAMETER_ID(polyMode)
 
 #undef PARAMETER_ID
 }
@@ -127,5 +127,9 @@ private:
     juce::AudioParameterChoice* polyModeParam;
 
     //==============================================================================
+
+    juce::AudioProcessorValueTreeState aptvs { *this, nullptr,"Parameters",
+                                        createParameterLayout() };
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MDAJX10SynthAudioProcessor)
 };
